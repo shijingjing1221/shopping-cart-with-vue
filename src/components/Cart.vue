@@ -118,27 +118,14 @@ export default {
             item.checked = !item.checked;
             item.checked ? ++this.selectedNum : --this.selectedNum;
             // 设置全选
-            this.selectedNum === this.cart.length ? this.checkAllFlag = true : this.checkAllFlag = false
+            this.selectedNum === this.cart.length ? this.$emit('checkallonly', true) : this.$emit('checkallonly', false)
         },
 
         /**
          * @method 全选
          */
         checkAll: function() {
-            var self = this;
-            this.checkAllFlag = !this.checkAllFlag;
-
-            this.cart.forEach(function(item) {
-                if (self.checkAllFlag) {
-                    // 全选
-                    item.checked = true;
-                    self.selectedNum = self.cart.length;
-                } else {
-                    // 取消全选
-                    item.checked = false;
-                    self.selectedNum = 0;
-                }
-            });
+            this.$emit('checkall');
         },
 
         /**
@@ -158,10 +145,7 @@ export default {
              * 也不能用forEach方法，因为它会自动缓存数组的长度
              * 这里还可以用filter
              */
-            var cart = this.cart;
-            this.cart = cart.filter(function(item) {
-                return !item.checked
-            });
+           this.$emit('delgoods');
             // for (var i = 0; i < cart.length; i++) {
             //     cart[i].checked && cart.splice(i--, 1);
             // };
