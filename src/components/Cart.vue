@@ -68,11 +68,9 @@
 
 export default {
     name: 'Cart',
-    props: ['cart', 'checkAllFlagGlocal'],
+    props: ['cart', 'checkAllFlag', 'selectedNum'],
     data() {
         return {
-            checkAllFlag: this.checkAllFlagGlocal,
-            selectedNum: 0,
             delFlag: false,
             // cart: [{
             //     id: 1001,
@@ -114,11 +112,7 @@ export default {
          * @param {Object} item 商品对象
          */
         selectGoods: function(item) {
-            // 状态值取反，并根据状态值对selectedNum进行加减
-            item.checked = !item.checked;
-            item.checked ? ++this.selectedNum : --this.selectedNum;
-            // 设置全选
-            this.selectedNum === this.cart.length ? this.$emit('checkallonly', true) : this.$emit('checkallonly', false)
+            this.$emit('selectgoods', item);
         },
 
         /**
@@ -126,6 +120,7 @@ export default {
          */
         checkAll: function() {
             this.$emit('checkall');
+
         },
 
         /**
@@ -151,8 +146,7 @@ export default {
             // };
 
             // 重置 被选商品数量、全选状态、删除状态
-            this.selectedNum = 0;
-            this.checkAllFlag = false;
+
             this.delFlag = !this.delFlag;
         }
 

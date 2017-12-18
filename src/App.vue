@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view v-bind:cart="cart" v-bind:checkAllFlagGlocal="checkAllFlag" v-on:addcart="AddToCart" v-on:checkall="checkAll" v-on:checkallonly="checkAllOnly" v-on:delgoods="delGoods"/>
+    <router-view v-bind:cart="cart" v-bind:checkAllFlag="checkAllFlag" v-bind:selectedNum="selectedNum" v-on:addcart="AddToCart" v-on:checkall="checkAll" v-on:checkallonly="checkAllOnly" v-on:delgoods="delGoods" v-on:selectgoods="selectGoods"/>
   </div>
 </template>
 
@@ -11,7 +11,8 @@ export default {
   data: function(){
     return {
       cart: [],
-      checkAllFlag: false
+      checkAllFlag: false,
+      selectedNum: 0
     }
   },
   methods:{
@@ -29,7 +30,7 @@ export default {
           this.$set(this.cart[cartIndex], 'subtotal', goods.price.toFixed(1));
           this.$set(this.cart[cartIndex], 'checked', false);
           // 新增商品，购物车不能为全选
-          this.checkAllFlagGlocal = false;
+          this.checkAllFlag = false;
           return;
       }
 
@@ -50,6 +51,7 @@ export default {
     checkAll: function () {
     var self = this;
     this.checkAllFlag = !this.checkAllFlag;
+    console.log(this.checkAllFlag, "in app.vue")
 
     this.cart.forEach(function (item) {
         if (self.checkAllFlag) {
@@ -62,13 +64,21 @@ export default {
             self.selectedNum = 0;
         }
     });
-},
-delGoods:function(){
-  var cart = this.cart;
-  this.cart = cart.filter(function(item) {
-      return !item.checked
-  });
-}
+  },
+  delGoods:function(){
+    var cart = this.cart;
+    this.cart = cart.filter(function(item) {
+        return !item.checked
+    });
+    this.selectedNum = 0;
+    this.checkAllFlag = false;
+  },
+  selectGoods: function(item) {
+      item.checked = !item.checked;
+      item.checked ? ++this.selectedNum : --this.selectedNum;
+      // 设置全选
+      this.selectedNum === this.cart.length ? this.checkAllFlag = true : this.checkAllFlag = false;
+  }
   }
 }
 </script>
