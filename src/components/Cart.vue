@@ -65,7 +65,7 @@
 </template>
 
 <script>
-
+import { EventBus } from '../EventBus.js';
 export default {
     name: 'Cart',
     props: ['cart', 'checkAllFlag', 'selectedNum'],
@@ -112,14 +112,14 @@ export default {
          * @param {Object} item 商品对象
          */
         selectGoods: function(item) {
-            this.$emit('selectgoods', item);
+            EventBus.$emit('selectgoods', item);
         },
 
         /**
          * @method 全选
          */
         checkAll: function() {
-            this.$emit('checkall');
+            EventBus.$emit('checkall');
 
         },
 
@@ -140,7 +140,7 @@ export default {
              * 也不能用forEach方法，因为它会自动缓存数组的长度
              * 这里还可以用filter
              */
-           this.$emit('delgoods');
+           EventBus.$emit('delgoods');
             // for (var i = 0; i < cart.length; i++) {
             //     cart[i].checked && cart.splice(i--, 1);
             // };

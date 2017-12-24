@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <router-view v-bind:cart="cart" v-bind:checkAllFlag="checkAllFlag" v-bind:selectedNum="selectedNum" v-on:addcart="AddToCart" v-on:checkall="checkAll" v-on:checkallonly="checkAllOnly" v-on:delgoods="delGoods" v-on:selectgoods="selectGoods"/>
+
+       <router-view v-bind:cart="cart" v-bind:checkAllFlag="checkAllFlag" v-bind:selectedNum="selectedNum" />
   </div>
 </template>
 
 <script>
-
+import { EventBus } from './EventBus.js';
 export default {
   name: 'app',
   data: function(){
@@ -14,6 +15,13 @@ export default {
       checkAllFlag: false,
       selectedNum: 0
     }
+  },
+  created: function() {
+      EventBus.$on('addcart', this.AddToCart)
+      EventBus.$on('checkall', this.checkAll)
+      EventBus.$on('checkallonly', this.checkAllOnly)
+      EventBus.$on('delgoods', this.delGoods)
+      EventBus.$on('selectgoods', this.selectGoods)
   },
   methods:{
     AddToCart:function(goods){

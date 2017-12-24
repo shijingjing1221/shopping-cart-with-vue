@@ -1,9 +1,4 @@
-<
-
-
-
-s
-
+<style src="../assets/main.css"></style>
 <template>
 
 <div class="device" id="page-list">
@@ -46,6 +41,9 @@ s
 <script>
 
 import vueresource from 'vue-resource'
+import { EventBus } from '../EventBus.js';
+
+
 export default {
     name: 'List',
     data() {
@@ -90,14 +88,10 @@ export default {
     props: ['cart', 'checkAllFlagGlocal'],
     created: function() {
         this.loadData(this.setList);
-
-
     },
     mounted: function() {
     },
     methods: {
-
-
         /**
          * @method 设置商品列表
          */
@@ -106,6 +100,7 @@ export default {
             this.list = this.goods.filter(function(item) {
                 return self.cate_index !== 0 ? item.type === self.cate_index : item
             });
+
         },
 
         loadData: function(next) {
@@ -199,8 +194,8 @@ export default {
         },
 
         addToCart: function(goods) {
-            this.$emit('addcart', goods);
-            this.$emit('checkallonly', false);
+            EventBus.$emit('addcart', goods);
+            EventBus.$emit('checkallonly', false);
         }
     }
 }
